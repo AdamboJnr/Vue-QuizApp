@@ -35,6 +35,25 @@
       correct: 'b'
     },  
   ])
+
+  const data = reactive({
+    counter: 0,
+    finished: false,
+    clicked: '',
+    answeredCorrectly: 0
+  })
+
+
+  // const checkAnswer = () => {
+  //   if(!data.clicked){
+  //     alert('Please Select an answer')
+  //   }else{
+  //     if(data.clicked === quizzData[data.counter].correct){
+  //       data.answeredCorrectly++
+  //     }
+  //     data.counter++
+  //   }
+  // }
 </script>
 
 <template>
@@ -42,35 +61,37 @@
     <div class="quiz-container">
       <div class="quiz-header">
         <h2 id="question">
-          Question Text
+          {{ quizzData[data.counter].question }}
         </h2>
       </div>
       <div>
         <ul>
           <li>
-            <input type="radio" name="answer" id="" class="answer">
-            <label for="">answer</label>
+            <input type="radio" name="answer" id="" class="answer" @click="data.clicked = 'a' ">
+            <label for=""> {{ quizzData[data.counter].a }} </label>
           </li>
 
           <li>
-            <input type="radio" name="answer" id="" class="answer">
-            <label for="">answer</label>
+            <input type="radio" name="answer" id="" class="answer" @click="data.clicked = 'b' ">
+            <label for=""> {{ quizzData[data.counter].b }} </label>
           </li>
 
           <li>
-            <input type="radio" name="answer" id="" class="answer">
-            <label for="">answer</label>
+            <input type="radio" name="answer" id="" class="answer" @click="data.clicked = 'c' ">
+            <label for=""> {{ quizzData[data.counter].c }} </label>
           </li>
 
           <li>
-            <input type="radio" name="answer" id="" class="answer">
-            <label for="">answer</label>
+            <input type="radio" name="answer" id="" class="answer" @click="data.clicked = 'd' ">
+            <label for=""> {{ quizzData[data.counter].d }} </label>
           </li>
+
         </ul>
       </div>
 
-
-      <button>Submit</button>
+      <pre>{{ data.clicked }}</pre>
+      <pre>{{ data.answeredCorrectly }}</pre>
+      <button @click="checkAnswer">Submit</button>
     </div>
   </section>
 </template>
