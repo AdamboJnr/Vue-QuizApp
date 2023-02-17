@@ -1,6 +1,7 @@
 <script setup>
-  import { ref,reactive} from 'vue'
+  import { ref,reactive, watch} from 'vue'
 
+  // Default Question and Answer
   const quizzData = ref([
     {
       question: 'Which language runs in a web browser?',
@@ -36,6 +37,7 @@
     },  
   ])
 
+  // Flags to update the page
   const data = reactive({
     counter: 0,
     finished: false,
@@ -43,22 +45,36 @@
     answeredCorrectly: 0
   })
 
+  // Checks if answer submitted is true
+  const checkAnswer = () => {
+    if(!data.clicked){
+      alert('Please Select an answer')
+    }else{
+      if(data.clicked === quizzData.value[data.counter].correct){
+        data.answeredCorrectly++
+      }
+      data.counter++
+    }
+  }
 
-  // const checkAnswer = () => {
-  //   if(!data.clicked){
-  //     alert('Please Select an answer')
-  //   }else{
-  //     if(data.clicked === quizzData[data.counter].correct){
-  //       data.answeredCorrectly++
-  //     }
-  //     data.counter++
-  //   }
-  // }
+  // takes user to the scoresheet
+  watch(() => data.counter, (score) => {
+    if(score === 4){
+      data.finished = true
+    }
+  })
+
+  // Resets the flags to defaults
+  const playAgain = () => {
+    data.answeredCorrectly = 0
+    data.counter = 0
+    data.finished = false
+  }
 </script>
 
 <template>
   <section>
-    <div class="quiz-container">
+    <div class="quiz-container" v-if="!data.finished">
       <div class="quiz-header">
         <h2 id="question">
           {{ quizzData[data.counter].question }}
@@ -88,10 +104,11 @@
 
         </ul>
       </div>
-
-      <pre>{{ data.clicked }}</pre>
-      <pre>{{ data.answeredCorrectly }}</pre>
       <button @click="checkAnswer">Submit</button>
+    </div>
+    <div class="quiz-container" v-else>
+      <h1>You have Answered {{ data.answeredCorrectly }}/4 questions correctly</h1>
+      <button @click="playAgain">Try Again</button>
     </div>
   </section>
 </template>
